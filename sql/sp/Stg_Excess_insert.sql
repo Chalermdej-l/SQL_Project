@@ -1,12 +1,28 @@
 CREATE OR ALTER PROCEDURE Stg_Excess_insert
 AS
+
+/***---------------------------------------------------------------------------
+
+Creator - Chalermdej
+
+Objective - Procedure to load in excess table data if table not exist will create
+            If exist if insert the latest data base on the max date
+
+---------------------------------------------------------------------------***/
+
+--Check if table already exist if not create the table from stg table data
+
     IF NOT EXISTS (SELECT *
                    FROM   sys.tables
                    WHERE  NAME = 'excess')
       SELECT *
       INTO   excess
       FROM   [stg].[stg_excess]
+
     ELSE
+
+--Check if there is record in the table if there is find the max day and only insert the new day data
+
         IF exists (select top 1 * from  [dbo].[excess])
         BEGIN
         INSERT INTO [dbo].[excess]
@@ -26,6 +42,8 @@ AS
         TRUNCATE TABLE [stg].[stg_excess]
         
         END
+
+--If table exist but not data than insert all data from stg to the table
 
         ELSE
 

@@ -1,7 +1,19 @@
 
 
 CREATE OR ALTER  PROCEDURE[dbo].[Stg_Covid_insert]
+
 AS
+
+/***---------------------------------------------------------------------------
+
+Creator - Chalermdej
+
+Objective - Procedure to load in covid table data if table not exist will create
+            If exist if insert the latest data base on the max date
+
+---------------------------------------------------------------------------***/
+
+--Check if table already exist if not create the table from stg table data
     IF NOT EXISTS (SELECT *
                    FROM   sys.tables
                    WHERE  NAME = 'covid')
@@ -9,6 +21,9 @@ AS
       INTO   covid
       FROM   [stg].[stg_covid]
     ELSE
+    
+--Check if there is record in the table if there is find the max day and only insert the new day data
+
 		IF exists (select top 1 * from  [dbo].[covid])
 			BEGIN
 			INSERT INTO [dbo].[covid]
@@ -45,6 +60,8 @@ AS
         
 			TRUNCATE TABLE [stg].[stg_covid]
         END
+
+--If table exist but not data than insert all data from stg to the table
 		ELSE
 			INSERT INTO [dbo].[covid]
 			SELECT [iso_code],

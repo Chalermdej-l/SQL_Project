@@ -7,6 +7,13 @@ class configcovid:
     date_col = ['date']
     float_col = ['total_cases','new_cases','new_cases_smoothed','total_deaths','new_deaths','new_deaths_smoothed','total_cases_per_million','new_cases_per_million','new_cases_smoothed_per_million','total_deaths_per_million','new_deaths_per_million','new_deaths_smoothed_per_million','reproduction_rate','icu_patients','icu_patients_per_million','hosp_patients','hosp_patients_per_million','weekly_icu_admissions','weekly_icu_admissions_per_million','weekly_hosp_admissions','weekly_hosp_admissions_per_million','total_tests','new_tests','total_tests_per_thousand','new_tests_per_thousand','new_tests_smoothed','new_tests_smoothed_per_thousand','positive_rate','tests_per_case','total_vaccinations','people_vaccinated','people_fully_vaccinated','total_boosters','new_vaccinations','new_vaccinations_smoothed','total_vaccinations_per_hundred','people_vaccinated_per_hundred','people_fully_vaccinated_per_hundred','total_boosters_per_hundred','new_vaccinations_smoothed_per_million','new_people_vaccinated_smoothed','new_people_vaccinated_smoothed_per_hundred','stringency_index','population_density','median_age','aged_65_older','aged_70_older','gdp_per_capita','extreme_poverty','cardiovasc_death_rate','diabetes_prevalence','female_smokers','male_smokers','handwashing_facilities','hospital_beds_per_thousand','life_expectancy','human_development_index','population','excess_mortality_cumulative_absolute','excess_mortality_cumulative','excess_mortality','excess_mortality_cumulative_per_million']
 
+    test_list = [ 'new_tests','newtests_monthlyavg']
+    cases_list = [ 'new_cases','newcases_monthlyavg']
+    deaths_list = [ 'new_deaths','newdeaths_monthlyavg']
+    vaccinated_list = [ 'new_vaccinations', 'newvaccinations_monthlyavg']
+    vaccinatedtotal_list = [ 'vaccinations_perpopulation', 'fullyvaccinations_perpopulation']
+    typelist= test_list+cases_list+deaths_list+vaccinated_list
+    
     # table name and type
     dimention_col = {
     'iso_code':sqlalchemy.VARCHAR(10)    
@@ -90,10 +97,25 @@ class configcovid:
     ,'excess_mortality_cumulative_per_million':sqlalchemy.DECIMAL(10,3)
     }
 
+    # Store procedure query
     sp_Covid = open('sql/sp/stg_Covid_insert.sql').read()
     sp_Vaccinated = open('sql/sp/stg_Vaccinated_insert.sql').read()
     sp_Dimention = open('sql/sp/stg_Dimention_insert.sql').read()
     sp_Excess = open('sql/sp/stg_Excess_insert.sql').read()
-
-    sp_list =[sp_Covid,sp_Vaccinated,sp_Dimention,sp_Excess]
+    sp_list =[sp_Covid,sp_Vaccinated,sp_Dimention,sp_Excess]    
     sp_excute_list = ['Stg_Covid_insert','Stg_Vaccinated_insert','Stg_Dimention_insert','Stg_Excess_insert']
+
+    # View query
+    view_Combine = open('sql/view/Combine_data.sql').read()
+    view_Overview = open('sql/view/Current_Overview.sql').read()
+    view_list = [view_Combine,view_Overview]
+
+
+    # Select query
+    query_Newdata_avg = open('sql/query/Newdata_avg.sql').read()
+    query_Class_Overview = open('sql/query/Class_Overview.sql').read()
+    query_Continent_Overview = open('sql/query/Continent_Overview.sql').read()
+    query_Top10_death = open('sql/query/Top10_death.sql').read()
+    query_Top10_infected = open('sql/query/Top10_infected.sql').read()
+    query_Top10_life = open('sql/query/Top10_life.sql').read()
+    query_Top10_gdp = open('sql/query/Top10_gdp.sql').read()

@@ -1,11 +1,28 @@
 CREATE OR ALTER  PROCEDURE Stg_Vaccinated_insert
 AS
+
+
+/***---------------------------------------------------------------------------
+
+Creator - Chalermdej
+
+Objective - Procedure to load in excess table data if table not exist will create
+            If exist if insert the latest data base on the max date
+
+---------------------------------------------------------------------------***/
+
+--Check if table already exist if not create the table from stg table data
+
+
     IF NOT EXISTS (SELECT *
                    FROM   sys.tables
                    WHERE  NAME = 'vaccinated')
       SELECT *
       INTO   vaccinated
       FROM   [stg].[stg_vaccinated]
+
+--Check if there is record in the table if there is find the max day and only insert the new day data
+
     ELSE
         IF exists (select top 1 * from  [dbo].[vaccinated])
         BEGIN
@@ -44,6 +61,9 @@ AS
 
         TRUNCATE TABLE [stg].[stg_vaccinated]
         END
+
+--If table exist but not data than insert all data from stg to the table
+
         ELSE
             INSERT INTO [dbo].[vaccinated]
             SELECT [iso_code],
