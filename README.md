@@ -16,7 +16,9 @@ And create [view](sql/view) for further data anylysis. We will also explore the 
 
 ## Prerequisite
 
-To reproduce this you will need [SQL server management studio](https://learn.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?)
+To reproduce this you will need to install [SQL server management studio](https://learn.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?) and host a local server.
+
+Once install you will need to create a database with the name `Covid_Database`
 
 You will also need the below package.
 1. [Pandas](https://pandas.pydata.org/)
@@ -30,13 +32,13 @@ You will also need the below package.
 Clone this project
 
 ```
-git clone https://github.com/Chalermdej-l/PortfolioProject
+git clone https://github.com/Chalermdej-l/SQL_Project.git
 ```
 
 Access the clone directory
 
 ```
-cd PortfolioProject
+cd SQL_Project
 ```
 
 Intall the require package by 
@@ -45,10 +47,7 @@ Intall the require package by
 pip install -r requirements.txt
 ```
 
-Download the data from keggle
+Once the package is install please access the [file](/Main.ipynb) and run the code.
 
-```
-kaggle datasets download -d rounakbanik/the-movies-dataset -p data --unzip –force
-```
-
-Once the package is install please access the [file](/Movie.ipynb) and run the code.
+The script will download the data and store the data in a stagging table and create a [store procedure](sql/sp/) to insert the file
+If the table does not exist yet this will create one and this script will also create a [view](sql/view) to use in the select [query](sql/query).
